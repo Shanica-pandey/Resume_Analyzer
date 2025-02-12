@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 50px;
+        }
+        .container {
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            margin: auto;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .missing-skills {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>AI Resume Analyzer</h2>
+
+        <form action="{{ url_for('index') }}" method="POST" enctype="multipart/form-data">
+            <label>Upload Resume (PDF):</label>
+            <input type="file" name="resume" required>
+
+            <label>Enter Job Description:</label>
+            <textarea name="job_description" rows="5" required>{{ request.form.get("job_description", "") }}</textarea>
+
+            <button type="submit">Analyze</button>
+        </form>
+
+        {% if match is not none %}
+            <div class="result">
+                <p>🔹 Match Percentage: <strong>{{ match }}%</strong></p>
+                {% if missing %}
+                    <p class="missing-skills">⚠️ Missing Skills: {{ missing }}</p>
+                {% else %}
+                    <p>✅ No missing skills! You're a perfect fit! 🎉</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
